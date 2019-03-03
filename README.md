@@ -1,3 +1,21 @@
+
+Dependencies:
+
+    -grommet
+    -grommet-icons
+    -react
+    -react-dom
+    -react-redux
+    -react-router-dom
+    -react-scripts
+    -redux"
+    -redux-promise-middleware
+    -redux-thunk
+    -styled-components
+In the project directory, you can install all of them by running:
+### `npm install`
+
+--------------------------
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
