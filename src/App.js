@@ -4,6 +4,12 @@
 * */
 
 import React, { Component } from 'react';
+import {BrowserRouter as Router,
+  Route,
+  Switch,
+  Link} from "react-router-dom";
+
+// Grommet Imports
 import {
   Box,
   Button,
@@ -14,13 +20,17 @@ import {
   ResponsiveContext, Text,
 } from 'grommet';
 import { FormClose, Notification,Menu,Close } from 'grommet-icons';
+
+// Component Imports
 import AppBar from "./components/AppBar";
 
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
+// Page Imports
 import HomePage from "./components/pages/HomePage";
 import NotFoundPage from "./components/pages/NotFoundPage";
-// grommet theme customize
+import FirstPage from "./components/pages/FirstPage";
+
+// Grommet Theme Customize
 const theme = {
   global: {
     colors: {
@@ -35,11 +45,32 @@ const theme = {
 };
 
 
-
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.sidebarToggle = this.sidebarToggle.bind(this);
+    this.showSidebarToggle = this.showSidebarToggle.bind(this);
+    this.showSidebarClose = this.showSidebarClose.bind(this);
+
+  }
+
   state = {
-    showSidebar: false/*right*/,sidebar:true/*left*/
+    showSidebar: false/*right*/,sidebar:false/*left*/
   };
+
+  sidebarToggle(){
+    this.setState({ sidebar: !this.state.sidebar });
+  };
+
+  showSidebarToggle(){
+    this.setState({ showSidebar: !this.state.showSidebar });
+  };
+
+  showSidebarClose(){
+    this.setState({ showSidebar: false });
+  };
+
   render() {
     const { showSidebar,sidebar } = this.state;
     return (
@@ -51,13 +82,13 @@ class App extends Component {
               <AppBar>
                 <Button
                     icon={(this.state.sidebar)?<Close/>:<Menu />}
-                    onClick={() => this.setState({ sidebar: !this.state.sidebar })}
+                    onClick={this.sidebarToggle}
                 />
                 {/*-----------Header---------------*/}
                 <Heading level='3' margin='none'>Grommet.v2 Starter</Heading>
                 <Button
                 icon={<Notification />}
-                onClick={() => this.setState({ showSidebar: !this.state.showSidebar })}
+                onClick={this.showSidebarToggle}
                 />
               </AppBar>
 
@@ -72,11 +103,14 @@ class App extends Component {
                           { type: "slideRight", size: "xlarge", duration: 150 }
                         ]}
                     >
-                      {["First", "Second", "Third"].map(name => (
-                          <Button key={name} href="#" hoverIndicator>
+                      {/*Nav Buttons*/}
+                      {[{src:"",name:"Home"}, {src:"first",name:"First"},].map(link => (
+                          <Button key={link.src}  hoverIndicator>
+                            <Link to={"/"+link.src} style={{all:"unset"}}>
                             <Box pad={{ horizontal: "medium", vertical: "small" }}>
-                              <Text>{name}</Text>
+                              <Text>{link.name}</Text>
                             </Box>
+                            </Link>
                           </Button>
                       ))}
                     </Box>
@@ -86,6 +120,7 @@ class App extends Component {
                   {/*-------------------------------*/}
                   <Switch>
                     <Route path={"/"} exact /*strict*/ component={HomePage}/>
+                    <Route path={"/first"} exact /*strict*/ component={FirstPage}/>
                     <Route exact /*strict*/ component={NotFoundPage}/>
                   </Switch>
                   {/*-------------------------------*/}
@@ -115,7 +150,7 @@ class App extends Component {
                     >
                       <Button
                         icon={<FormClose />}
-                        onClick={() => this.setState({ showSidebar: false })}
+                        onClick={this.showSidebarClose}
                       />
                     </Box>
                     <Box
